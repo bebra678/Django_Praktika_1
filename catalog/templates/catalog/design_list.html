@@ -44,6 +44,7 @@
          <p class="text">Описание: {{ design.info }}</p>
         <p>Cтатус: {{ design.get_status_display }}</p>
         <p>Категория: {{ design.get_category_display }}</p>
+        <p>Дата: {{ design.date }} </p>
         {% if user.is_staff %}
         <p>Пользователь : {{ design.user.get_username }}</p>
         {% endif %}
@@ -53,10 +54,11 @@
     {% else %}
       <p>Заявок нету</p>
     {% endif %}
-{% endblock %}
   <footer class="mt-auto text-white-50">
+    <p><strong>Работ принятых в работу: </strong> {{ num_design }}</p>
     <p>Floppa</a>.</p>
   </footer>
+  {% endblock %}
 </div>
 </body>
 </html>

@@ -127,6 +127,6 @@ overflow: hidden;
   max-width: 203px
   ;overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  border: solid white;
 
 }

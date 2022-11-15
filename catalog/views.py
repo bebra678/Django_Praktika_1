@@ -12,36 +12,17 @@ def index(request):
     return render(
         request,
         'index.html',
-        # context={'num_books': num_books, 'num_instances': num_instances,
-        #          'num_instances_available': num_instances_available, 'num_authors': num_authors,
-        #          'num_visits': num_visits},  # num_visits appended
     )
 
 
 class PostsListView(generic.ListView):
     model = Design
     paginate_by = 4
+    num_design = Design.objects.filter(status='new')
 
     def get_queryset(self):
-        ordering = self.request.GET.get('orderby')
-        if ordering == 'Выполнено':
-            ordering = 'ready'
-        elif ordering == 'Принято в работу':
-            ordering = 'load'
-        elif ordering == 'Новая':
-            ordering = 'new'
-        elif ordering == 'Все':
-            ordering = ''
-        if ordering == '' or ordering == None:
-            if self.request.user.is_staff:
-                return Design.objects.filter()
-            else:
-                return Design.objects.filter(user__exact=self.request.user.id)
-        else:
-            if self.request.user.is_staff:
-                return Design.objects.filter(status=ordering)
-            else:
-                return Design.objects.filter(user__exact=self.request.user.id, status=ordering)
+
+        return Design.objects.filter(status__exact='new').order_by('status')
 
 
 def Register(request):
