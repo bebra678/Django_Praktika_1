@@ -1,6 +1,9 @@
 from django.contrib.auth import logout, login, authenticate
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views import generic
+from django.views.generic import CreateView
+from .forms import PostForm
 from .models import Design
 from .forms import UserRegistrationForm
 
@@ -23,6 +26,13 @@ class PostsListView(generic.ListView):
     def get_queryset(self):
 
         return Design.objects.filter(status__exact='new').order_by('status')
+
+
+class CreatePostView(CreateView): # new
+    model = Design
+    form_class = PostForm
+    template_name = 'catalog/create-post.html' # куда идёт форма
+    success_url = reverse_lazy('posts') # при удачном создании редирект к странице
 
 
 def Register(request):
@@ -57,3 +67,4 @@ def Logout_view(request):
     logout(request)
     redirect('index.html')
     # Redirect to a success page.
+
