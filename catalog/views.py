@@ -20,7 +20,6 @@ def index(request):
 class PostsListView(generic.ListView):
     model = Design
     paginate_by = 4
-    num_design = Design.objects.filter(status='new')
 
     def get_queryset(self):
 
@@ -32,6 +31,10 @@ class CreatePostView(CreateView): # new
     form_class = PostForm
     template_name = 'catalog/create_post.html'
     success_url = reverse_lazy('posts') # при удачном создании редирект к странице
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(CreatePostView, self).form_valid(form)
 
 
 def Register(request):
