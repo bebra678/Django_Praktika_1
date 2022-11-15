@@ -3,9 +3,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic import CreateView
-from .forms import PostForm
 from .models import Design
-from .forms import UserRegistrationForm
+from .forms import UserRegistrationForm, PostForm
 
 
 # Create your views here.
@@ -31,7 +30,7 @@ class PostsListView(generic.ListView):
 class CreatePostView(CreateView): # new
     model = Design
     form_class = PostForm
-    template_name = 'catalog/create-post.html' # куда идёт форма
+    template_name = 'catalog/create_post.html'
     success_url = reverse_lazy('posts') # при удачном создании редирект к странице
 
 
