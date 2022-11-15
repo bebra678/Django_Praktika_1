@@ -7,7 +7,7 @@ class Design(models.Model):
     id = models.AutoField(primary_key=True, unique=True, verbose_name='id')
     name = models.CharField(max_length=30, help_text='название', verbose_name='Название')
     info = models.CharField(max_length=50, help_text='Введите описание', verbose_name='Описание', null=True)
-    image = models.ImageField(upload_to='images', default='SOME STRING', verbose_name='Изображение', null=False)
+    image = models.ImageField(upload_to='images/',  verbose_name='Изображение', null=False)
     date = models.DateField(default=datetime.today(), null=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name='Пользователь', null=True, blank=True,
                              to_field='id')
@@ -39,4 +39,5 @@ class Design(models.Model):
 
     def __str__(self):
         return self.name
+
 
