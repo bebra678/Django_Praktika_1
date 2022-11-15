@@ -39,3 +39,10 @@ class UserRegistrationForm(forms.ModelForm):
         if cd['checkbox'] == False:
             raise forms.ValidationError('Подтвердите обработку персональных данных')
         return cd['checkbox']
+
+
+class PostForm(forms.ModelForm):
+
+    class Meta:
+        model = Design
+        fields = ['name', 'info', 'image', 'date']
