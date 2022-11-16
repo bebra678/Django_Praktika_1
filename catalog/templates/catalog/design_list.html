@@ -38,8 +38,8 @@
     {% if design_list %}
     <div class="main">
       {% for design in design_list %}
-      <li class="design">
-        <p href="{{ posts.get_absolute_url }}">Название: {{ design.name }}</p>
+      <div class="design">
+        <p><a href="{{ posts.get_absolute_url }}">Название: {{ design.name }}</a></p>
         <img src="{{ design.image.url}}" alt="connect" style="max-height:150px">
          <p class="text">Описание: {{ design.info }}</p>
         <p>Cтатус: {{ design.get_status_display }}</p>
@@ -47,8 +47,9 @@
         <p>Дата: {{ design.date }} </p>
         {% if user.is_staff %}
         <p>Пользователь : {{ design.user.get_username }}</p>
+        <p><a href="#"><strong>Удалить?</strong></a></p>
         {% endif %}
-      </li>
+      </div>
       {% endfor %}
     </div>
     {% else %}
