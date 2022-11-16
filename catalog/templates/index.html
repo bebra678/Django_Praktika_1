@@ -7,18 +7,10 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'templates/style.css' %}">
     {%block title%} <title>Дизайн студия</title> {%endblock%}
-
-
-
-
-
-
-
-<link href="../assets/dist/css/bootstrap.min.css">
-
+    <link href="../assets/dist/css/bootstrap.min.css">
   </head>
-  <body class="d-flex h-100 text-center text-bg-dark">
 
+  <body class="d-flex h-100 text-center text-bg-dark">
 <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
   <header class="mb-auto">
     <div>
@@ -30,7 +22,7 @@
         <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="#">Домашняя страница</a>
         <a class="nav-link fw-bold py-1 px-0" href="{% url 'posts' %}">Заявки</a>
         {% if user.is_authenticated %}
-          <a class="nav-link fw-bold py-1 px-0" href="#">Пользователь: {{ user.get_username }}</a>
+          <a class="nav-link fw-bold py-1 px-0" href="{% url 'personal_area' %}">Пользователь: {{ user.get_username }}</a>
           <a class="nav-link fw-bold py-1 px-0" href="{% url 'logout'%}?next={{request.path}}">Logout</a>
         {%else%}
           <a class="nav-link fw-bold py-1 px-0" href="{% url 'login'%}?next={{request.path}}">авторизация</a>
@@ -39,7 +31,6 @@
       </nav>
     </div>
   </header>
-
   <main class="px-3">
     <h1>Дизайн студия Шлеппы</h1>
     <p class="lead">Дизайн студия Шлеппы гарантирует: качество,быстроту и заботу о вашем проекте как о собственном :3</p>
@@ -47,15 +38,9 @@
       <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Подробнее о услугах</a>
     </p>
   </main>
-
   <footer class="mt-auto text-white-50">
     <p>Floppa</a>.</p>
   </footer>
 </div>
-
-
-
-
-
 </body>
 </html>
