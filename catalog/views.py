@@ -24,6 +24,11 @@ class PostsListView(generic.ListView):
         return Design.objects.filter(status__exact='new').order_by('status')
 
 
+class AdminListView(generic.ListView):
+    model = Design
+    template_name = "catalog/change_post.html"
+
+
 class CreatePostView(CreateView): # new
     model = Design
     form_class = PostForm
