@@ -1,4 +1,5 @@
 from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.decorators import user_passes_test, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -23,11 +24,6 @@ class PostsListView(generic.ListView):
     def get_queryset(self):
 
         return Design.objects.filter(status='new')
-
-
-class AdminListView(generic.ListView):
-    model = Design
-    template_name = "catalog/change_post.html"
 
 
 class CreatePostView(CreateView): # new
