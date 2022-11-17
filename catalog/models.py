@@ -5,7 +5,8 @@ from django.utils.timezone import datetime
 
 class Design(models.Model):
     id = models.AutoField(primary_key=True, unique=True, verbose_name='id')
-    name = models.CharField(max_length=30, help_text='название', verbose_name='Название')
+    name = models.CharField(max_length=30, unique=True, help_text='название', verbose_name='Название',
+                            error_messages={'unique':"Такая заявка уже существует!"})
     info = models.CharField(max_length=50, help_text='Введите описание', verbose_name='Описание', null=True)
     image = models.ImageField(upload_to='images/',  verbose_name='Изображение', null=False)
     date = models.DateField(default=datetime.today(), null=True)
