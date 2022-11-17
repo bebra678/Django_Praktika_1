@@ -1,9 +1,10 @@
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DeleteView
 from .models import Design
 from .forms import UserRegistrationForm, PostForm
 
@@ -21,7 +22,7 @@ class PostsListView(generic.ListView):
 
     def get_queryset(self):
 
-        return Design.objects.filter(status__exact='new').order_by('status')
+        return Design.objects.filter(status='new')
 
 
 class AdminListView(generic.ListView):
@@ -83,3 +84,29 @@ class MyDesign(LoginRequiredMixin, generic.ListView):
         queryset = Design.objects.filter(user=self.request.user)
         return queryset
 
+
+class DeletePost(DeleteView):
+    model = Design
+    success_url = reverse_lazy('post_control')
+
+    def form_valid(self, form):
+        if self.object.status != 'new':
+            return redirect('catalog/error_delete.html')
+        else:
+            self.object.delete()
+            success_url = reverse_lazy('profile_applications')
+            success_msg = 'Запись удалена'
+            return HttpResponseRedirect(success_url, success_msg)
+
+
+class PostControl(generic.ListView):
+    model = Design
+    template_name = 'catalog/post_control.html'
+    success_url = reverse_lazy('post_control')
+
+
+def get_error(request):
+    return render(
+        request,
+        'catalog/error_delete.html'
+    )
