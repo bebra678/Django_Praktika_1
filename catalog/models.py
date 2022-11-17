@@ -9,7 +9,7 @@ class Design(models.Model):
                             error_messages={'unique':"Такая заявка уже существует!"})
     info = models.CharField(max_length=50, help_text='Введите описание', verbose_name='Описание', null=True)
     image = models.ImageField(upload_to='images/',  verbose_name='Изображение', null=False)
-    date = models.DateField(default=datetime.today(), null=True)
+    date = models.DateField(default=datetime.today(), null=True, verbose_name='Дата')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name='Пользователь', null=True, blank=True,
                              to_field='id')
     comment = models.TextField(max_length=400, verbose_name='Комментарий', null=False, blank=True)
@@ -37,6 +37,10 @@ class Design(models.Model):
 
     category = models.CharField(max_length=30, choices=CATEGORIES, default='Эскиз', help_text='Категории',
                                 verbose_name='Категории')
+
+    class Meta:
+        verbose_name = 'Заявку'
+        verbose_name_plural = 'Заявки'
 
     def __str__(self):
         return self.name
