@@ -38,7 +38,8 @@
         <p>Дата: {{ design.date }} </p>
         {% if user.is_staff %}
         <p>Пользователь : {{ design.user.get_username }}</p>
-        <p><a href="{% url 'delete_post' design.id %}"><strong>Удалить?</strong></a></p>
+        <p><a href="{% url 'delete_post' design.id %}"><strong>Удалить заявку?</strong></a></p>
+        <p><a href="{% url 'update_form' design.id %}"><strong>Сменить категорию?</strong></a></p>
         {% endif %}
       </div>
       {% endfor %}

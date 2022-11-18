@@ -38,10 +38,6 @@
         <p>Cтатус: {{ design.get_status_display }}</p>
         <p>Категория: {{ design.get_category_display }}</p>
         <p>Дата: {{ design.date }} </p>
-        {% if user.is_staff %}
-        <p>Пользователь : {{ design.user.get_username }}</p>
-        <p><a href="{% url 'delete_post' design.id %}"><strong>Удалить?</strong></a></p>
-        {% endif %}
       </div>
       {% endfor %}
     </div>

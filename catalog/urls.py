@@ -13,4 +13,5 @@ urlpatterns = [
     path('delete/<int:pk>', views.DeletePost.as_view(), name='delete_post'),
     path('post-control/', permission_required('change_post')(views.PostControl.as_view()), name='post_control'),
     path('delete-error/', views.get_error, name='error'),
+    path('update-category/<int:pk>', permission_required('change_post')(views.PostUpdate.as_view()), name='update_form'),
 ]

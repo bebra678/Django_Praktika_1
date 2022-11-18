@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic import CreateView, DeleteView
+from django.views.generic import CreateView, DeleteView, UpdateView
 from .models import Design
 from .forms import UserRegistrationForm, PostForm
 
@@ -106,3 +106,20 @@ def get_error(request):
         request,
         'catalog/error_delete.html'
     )
+
+
+class PostUpdate(UpdateView):
+    model = Design
+    fields = ('status', 'ready_images', 'category', 'comment')
+    template_name = 'catalog/update_form.html'
+    success_url = reverse_lazy('post_control')
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        if self.object.status == 'ready':
+            context['is_ready'] = True
+        elif self.object.status == 'load':
+            context['is_load'] = True
+        elif self.object.status == 'new':
+            context['is_new'] = True
+        return context
