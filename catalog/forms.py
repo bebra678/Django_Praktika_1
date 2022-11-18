@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator, RegexValidator
 from .models import Design
 
@@ -43,7 +44,15 @@ class UserRegistrationForm(forms.ModelForm):
 
 class PostForm(forms.ModelForm):
 
+    def clean_image(self):
+        image = self.cleaned_data.get('image', False)
+        if image:
+            if image.size > 2 * 1024 * 1024:
+                raise ValidationError("Вес картинки больше 2мб")
+            return image
+        else:
+            raise ValidationError("Не возможно обработать картинку")
+
     class Meta:
         model = Design
         fields = ['name', 'info', 'image', 'category']
-
