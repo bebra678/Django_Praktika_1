@@ -1,43 +1,38 @@
 from django.contrib.auth import logout, login, authenticate
-from django.contrib.auth.decorators import user_passes_test, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views import generic
-from django.views.generic import CreateView, DeleteView, UpdateView
+from django.views.generic import CreateView, DeleteView, UpdateView, ListView, TemplateView
 from .models import Design
 from .forms import UserRegistrationForm, PostForm
 
 
-def index(request):
-    return render(
-        request,
-        'index.html',
-    )
+class IndexView(TemplateView):
+    template_name = "index.html"
 
 
-class PostsListView(generic.ListView):
+class PostsListView(ListView):
     model = Design
     paginate_by = 4
 
     def get_queryset(self):
-
         return Design.objects.filter(status='new')
 
 
-class CreatePostView(CreateView): # new
+class CreatePostView(LoginRequiredMixin, CreateView):
     model = Design
     form_class = PostForm
     template_name = 'catalog/create_post.html'
-    success_url = reverse_lazy('posts') # при удачном создании редирект к странице
+    success_url = reverse_lazy('posts')
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super(CreatePostView, self).form_valid(form)
 
 
-def Register(request):
+#FIXME: сменить def на class
+def register(request):
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
         if user_form.is_valid():
@@ -53,25 +48,25 @@ def Register(request):
     return render(request, 'register.html', {'user_form': user_form})
 
 
-def My_view(request):
+#FIXME: lower word in def
+def my_view(request):
     username = request.POST['username']
     password = request.POST['password']
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
         redirect('index.html')
-        ...
     else:
         pass
 
 
-def Logout_view(request):
+def logout_view(request):
     logout(request)
     redirect('index.html')
     # Redirect to a success page.
 
 
-class MyDesign(LoginRequiredMixin, generic.ListView):
+class MyDesign(LoginRequiredMixin, ListView):
     model = Design
     template_name = "catalog/personal_area.html"
     context_object_name = 'design_list'
@@ -95,17 +90,10 @@ class DeletePost(DeleteView):
             return HttpResponseRedirect(success_url, success_msg)
 
 
-class PostControl(generic.ListView):
+class PostControl(ListView):
     model = Design
     template_name = 'catalog/post_control.html'
     success_url = reverse_lazy('post_control')
-
-
-def get_error(request):
-    return render(
-        request,
-        'catalog/error_delete.html'
-    )
 
 
 class PostUpdate(UpdateView):
