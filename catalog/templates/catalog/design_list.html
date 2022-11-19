@@ -40,7 +40,7 @@
     <div class="main">
       {% for design in design_list %}
       <div class="design">
-        <p><a href="{{ posts.get_absolute_url }}">Название: {{ design.name }}</a></p>
+        <p>Название: {{ design.name }}</p>
         <img src="{{ design.image.url}}" alt="connect" style="max-height:150px">
          <p class="text">Описание: {{ design.info }}</p>
         <p>Cтатус: {{ design.get_status_display }}</p>
