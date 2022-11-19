@@ -45,3 +45,16 @@ class Design(models.Model):
     def __str__(self):
         return self.name
 
+
+# class Category(models.Model):
+#     SKETCH = 'sketch'
+#     TWO_D = '2_D'
+#     THREE_D = '3_D'
+#     CATEGORIES = (
+#         (SKETCH, 'Эскиз'),
+#         (TWO_D, '2D'),
+#         (THREE_D, '3D'),
+#     )
+#
+#     category = models.CharField(max_length=30, choices=CATEGORIES, default='Эскиз', help_text='Категории',
+#                                 verbose_name='Категории')
