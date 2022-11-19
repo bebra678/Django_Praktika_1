@@ -11,7 +11,10 @@
   text-shadow: none; /* Prevent inheritance from `body` */
 }
 
-
+img {
+max-width:100%;
+height:auto;
+}
 /*
  * Base structure
  */

@@ -26,6 +26,10 @@ body {
   max-width: 42em;
 }
 
+img {
+max-width:100%;
+height:auto;
+}
 
 /*
  * Header
