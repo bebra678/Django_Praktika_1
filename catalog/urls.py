@@ -10,6 +10,7 @@ urlpatterns = [
     path('create-post/', CreatePostView.as_view(), name='add_post'),
     path('personal-area/', views.MyDesign.as_view(), name='personal_area'),
     path('delete/<int:pk>/', views.DeletePost.as_view(), name='delete_post'),
+    path('delete-by-user/<int:pk>/', views.DeletePostByUser.as_view(), name='delete_post_by_user'),
     path('post-control/', permission_required('change_post')(views.PostControl.as_view()), name='post_control'),
     path('update-category/<int:pk>/', permission_required('change_post')(views.PostUpdate.as_view()), name='update_form'),
 ]
