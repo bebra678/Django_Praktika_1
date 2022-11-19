@@ -78,7 +78,6 @@ class DeletePost(DeleteView):
     def form_valid(self):
         self.object.delete()
 
-
 class DeletePostByUser(DeleteView):
     model = Design
     success_url = reverse_lazy('personal_area')

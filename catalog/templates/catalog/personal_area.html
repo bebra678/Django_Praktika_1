@@ -42,7 +42,9 @@
         <p>Категория: {{ design.get_category_display }}</p>
         <p>Комментарий: {{ design.comment }}</p>
         <p>Дата: {{ design.date }} </p>
-        <p><a href="{% url 'delete_post_by_user' design.id %}"><strong>Удалить заявку?</strong></a></p>
+        {% if design.status == "new" %}
+          <p><a href="{% url 'delete_post_by_user' design.id %}"><strong>Изменить заявку?</strong></a></p>
+        {%endif%}
       </div>
       {% endfor %}
     </div>
