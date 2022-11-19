@@ -40,8 +40,9 @@
          <p class="text">Описание: {{ design.info }}</p>
         <p>Cтатус: {{ design.get_status_display }}</p>
         <p>Категория: {{ design.get_category_display }}</p>
+        <p>Комментарий: {{ design.comment }}</p>
         <p>Дата: {{ design.date }} </p>
-        <p><a href="{% url 'delete_post' design.id %}"><strong>Удалить заявку?</strong></a></p>
+        <p><a href="{% url 'delete_post_by_user' design.id %}"><strong>Удалить заявку?</strong></a></p>
       </div>
       {% endfor %}
     </div>
