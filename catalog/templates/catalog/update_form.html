@@ -16,22 +16,14 @@
   <body class="text-center">
 <main class="form-signin w-100 m-auto">
 <table style="display: flex; justify-content: space-around;">
-    <h1>Создание заявки</h1>
+    <h1>Обновление заявки</h1>
     <p>Следуйте этой форме:</p>
-    <form action="" method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.status}}
-        {{ form.category }}
-        {% if is_ready %}
-            {{ form.ready_images }}
-        {% endif %}
-        {% if is_load %}
-            {{ form.comment }}
-        {% endif %}
-        <input type="submit" value="Изменить" class="btn btn-success">
-  </form>
+        {{ form.as_p }}
+    <button type="submit">Создать заявку</button>
+        </form>
     </table>
 </main>
-</form>
   </body>
 </html>
