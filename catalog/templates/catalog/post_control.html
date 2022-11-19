@@ -44,7 +44,13 @@
         <p>Дата: {{ design.date }} </p>
         <p>Пользователь : {{ design.user.get_username }}</p>
         <p><a href="{% url 'delete_post' design.id %}"><strong>Удалить заявку?</strong></a></p>
-        <p><a href="{% url 'update_form' design.id %}"><strong>Изменить заявку?</strong></a></p>
+          {% if design.status == "new" %}
+            <p><a href="{% url 'update_form' design.id %}"><strong>Изменить заявку?</strong></a></p>
+              {% elif  design.status == "load" %}
+                <p><strong>Изменить заявку не возможно</strong></p>
+                {% elif  design.status == "ready" %}
+                  <p><strong>Изменить заявку не возможно</strong></p>
+          {% endif %}
       </div>
       {% endfor %}
     </div>

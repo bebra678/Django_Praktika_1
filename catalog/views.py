@@ -1,6 +1,5 @@
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView, TemplateView
@@ -61,7 +60,7 @@ def logout_view(request):
     redirect('index.html')
 
 
-class MyDesign(LoginRequiredMixin, ListView):
+class MyDesign(ListView, LoginRequiredMixin):
     model = Design
     template_name = "catalog/personal_area.html"
     context_object_name = 'design_list'
@@ -78,7 +77,8 @@ class DeletePost(DeleteView):
     def form_valid(self):
         self.object.delete()
 
-class DeletePostByUser(DeleteView):
+
+class DeletePostByUser(DeleteView, LoginRequiredMixin):
     model = Design
     success_url = reverse_lazy('personal_area')
 
