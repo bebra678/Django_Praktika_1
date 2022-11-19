@@ -37,7 +37,8 @@ class UserRegistrationForm(forms.ModelForm):
     def clean_checkbox(self):
         cd = self.cleaned_data
         print(cd['checkbox'])
-        if cd['checkbox'] == False:
+        # без использования False
+        if not cd['checkbox']:
             raise forms.ValidationError('Подтвердите обработку персональных данных')
         return cd['checkbox']
 
@@ -56,3 +57,4 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Design
         fields = ['name', 'info', 'image', 'category']
+
