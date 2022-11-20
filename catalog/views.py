@@ -3,8 +3,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView, TemplateView
-from .models import Design
-from .forms import UserRegistrationForm, PostForm
+from .models import Design, Category
+from .forms import UserRegistrationForm, PostForm, CategoryForm
 
 
 class IndexView(TemplateView):
@@ -29,6 +29,13 @@ class CreatePostView(LoginRequiredMixin, CreateView):
         # super - функция, которая обращается к классу, от которого наследуется текущий.
         form.instance.user = self.request.user
         return super(CreatePostView, self).form_valid(form)
+
+
+class CreateCategoryView(CreateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = 'catalog/create_category.html'
+    success_url = reverse_lazy('post_control')
 
 
 #FIXME: сменить def на class
