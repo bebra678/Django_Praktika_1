@@ -7,6 +7,7 @@ class Category(models.Model):
 
     name = models.CharField(max_length=30, default='Эскиз', help_text='Категории',
                                 verbose_name='Категории')
+
     def __str__(self):
         return self.name
 
@@ -21,7 +22,7 @@ class Design(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name='Пользователь', null=True, blank=True,
                              to_field='id')
     comment = models.TextField(max_length=400, verbose_name='Комментарий', null=False, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, )
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Категории' )
     NEW = 'new'
     LOAD = 'load'
     READY = 'ready'
