@@ -19,10 +19,11 @@ class Design(models.Model):
     info = models.CharField(max_length=50, help_text='Введите описание', verbose_name='Описание', null=True)
     image = models.ImageField(upload_to='images/',  verbose_name='Изображение', null=False)
     date = models.DateField(default=datetime.today(), null=True, verbose_name='Дата')
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name='Пользователь', null=True, blank=True,
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', null=True, blank=True,
                              to_field='id')
     comment = models.TextField(max_length=400, verbose_name='Комментарий', null=False, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Категории' )
+    # on_delete=models.CASCADE = если категория поста будет удалена, то удалятся и посты
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Категории' )
     NEW = 'new'
     LOAD = 'load'
     READY = 'ready'
