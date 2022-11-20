@@ -60,3 +60,4 @@ class PostForm(forms.ModelForm):
         model = Design
         fields = ['name', 'info', 'image', 'category']
 
+
