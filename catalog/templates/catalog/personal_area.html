@@ -31,7 +31,6 @@
       </nav>
     </div>
   </header>
-    {% if design_list %}
     <div class="main">
       {% for design in design_list %}
       <div class="design">
@@ -39,18 +38,24 @@
         <img src="{{ design.image.url}}" alt="connect" style="max-height:150px">
          <p class="text">Описание: {{ design.info }}</p>
         <p>Cтатус: {{ design.get_status_display }}</p>
-        <p>Категория: {{ design.category }}</p>
+        <p>Категория: {{ design.category}}</p>
         <p>Комментарий: {{ design.comment }}</p>
         <p>Дата: {{ design.date }} </p>
+        <p>User: {{ design.user }} </p>
+         <form method="get">
+        {{ filter.form.as_p }}
+        <input type="submit" />
+    </form>
+    {% for obj in filter.qs %}
+        {{ design.category }}<br />
+    {% endfor %}
+    </form>
         {% if design.status == "new" %}
           <p><a href="{% url 'delete_post_by_user' design.id %}"><strong>Удалить заявку?</strong></a></p>
         {%endif%}
       </div>
       {% endfor %}
     </div>
-    {% else %}
-      <p>Заявок нету</p>
-    {% endif %}
   <footer class="mt-auto text-white-50">
     <p>Floppa</a>.</p>
   </footer>

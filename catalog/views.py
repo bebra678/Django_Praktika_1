@@ -1,3 +1,5 @@
+from urllib import request
+
 import django_filters
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -68,12 +70,11 @@ def logout_view(request):
     redirect('index.html')
 
 
-class PostsListView(ListView, FilterView):
+class PostsListView(ListView, FilterView,):
     model = Design
     template_name = "catalog/design_list.html"
     paginate_by = 4
     filter_class = CategoryFilters
-
 
     def get_queryset(self):
         return Design.objects.filter(status='new')
@@ -86,7 +87,7 @@ class MyDesign(ListView, LoginRequiredMixin, FilterView):
     filter_class = CategoryFilters
 
     def get_queryset(self):
-        queryset = Design.objects.filter(user=self.request.user)
+        queryset = CategoryFilters(self.request.GET, queryset=Design.objects.filter(user=self.request.user))
         return queryset
 
 
