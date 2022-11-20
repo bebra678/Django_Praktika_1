@@ -1,8 +1,13 @@
+import django_filters
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView, TemplateView
+from django_filters.views import FilterView
+
+# from .filters import CategoryFilter
+from .filters import CategoryFilters
 from .models import Design, Category
 from .forms import UserRegistrationForm, PostForm, CategoryForm
 
@@ -11,12 +16,8 @@ class IndexView(TemplateView):
     template_name = "index.html"
 
 
-class PostsListView(ListView):
-    model = Design
-    paginate_by = 4
 
-    def get_queryset(self):
-        return Design.objects.filter(status='new')
+
 
 
 class CreatePostView(LoginRequiredMixin, CreateView):
@@ -67,10 +68,22 @@ def logout_view(request):
     redirect('index.html')
 
 
-class MyDesign(ListView, LoginRequiredMixin):
+class PostsListView(ListView, FilterView):
+    model = Design
+    template_name = "catalog/design_list.html"
+    paginate_by = 4
+    filter_class = CategoryFilters
+
+
+    def get_queryset(self):
+        return Design.objects.filter(status='new')
+
+
+class MyDesign(ListView, LoginRequiredMixin, FilterView):
     model = Design
     template_name = "catalog/personal_area.html"
     context_object_name = 'design_list'
+    filter_class = CategoryFilters
 
     def get_queryset(self):
         queryset = Design.objects.filter(user=self.request.user)
@@ -79,6 +92,14 @@ class MyDesign(ListView, LoginRequiredMixin):
 
 class DeletePost(DeleteView):
     model = Design
+    success_url = reverse_lazy('post_control')
+
+    def form_valid(self):
+        self.object.delete()
+
+
+class DeleteCategory(DeleteView):
+    model = Category
     success_url = reverse_lazy('post_control')
 
     def form_valid(self):

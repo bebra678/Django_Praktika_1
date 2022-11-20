@@ -4,9 +4,13 @@ from django.utils.timezone import datetime
 
 
 class Category(models.Model):
-
+    id = models.AutoField(primary_key=True, unique=True, verbose_name='id')
     name = models.CharField(max_length=30, default='Эскиз', help_text='Категории',
                                 verbose_name='Категории')
+
+    class Meta:
+        verbose_name = 'Категорию'
+        verbose_name_plural = 'Категории'
 
     def __str__(self):
         return self.name
@@ -23,7 +27,7 @@ class Design(models.Model):
                              to_field='id')
     comment = models.TextField(max_length=400, verbose_name='Комментарий', null=False, blank=True)
     # on_delete=models.CASCADE = если категория поста будет удалена, то удалятся и посты
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Категории' )
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Категории')
     NEW = 'new'
     LOAD = 'load'
     READY = 'ready'
@@ -35,7 +39,6 @@ class Design(models.Model):
 
     status = models.CharField(max_length=30, choices=LOAN_STATUS, default='new', help_text='Статус',
                               verbose_name='Статус')
-
 
     class Meta:
         verbose_name = 'Заявку'
