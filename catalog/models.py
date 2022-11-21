@@ -5,7 +5,8 @@ from django.utils.timezone import datetime
 
 class Category(models.Model):
     id = models.AutoField(primary_key=True, unique=True, verbose_name='id')
-    name = models.CharField(max_length=30, default='Эскиз', help_text='Категории',
+    name = models.CharField(max_length=30, default='Эскиз',
+                            help_text='Категории',
                                 verbose_name='Категории')
 
     class Meta:
@@ -18,16 +19,20 @@ class Category(models.Model):
 
 class Design(models.Model):
     id = models.AutoField(primary_key=True, unique=True, verbose_name='id')
-    name = models.CharField(max_length=30, unique=True, help_text='название', verbose_name='Название',
+    name = models.CharField(max_length=30, unique=True, help_text='название',
+                            verbose_name='Название',
                             error_messages={'unique':"Такая заявка уже существует!"})
-    info = models.CharField(max_length=50, help_text='Введите описание', verbose_name='Описание', null=True)
+    info = models.CharField(max_length=50, help_text='Введите описание', verbose_name='Описание',
+                            null=True)
     image = models.ImageField(upload_to='images/',  verbose_name='Изображение', null=False)
     date = models.DateField(default=datetime.today(), null=True, verbose_name='Дата')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', null=True, blank=True,
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь',
+                             null=True, blank=True,
                              to_field='id')
     comment = models.TextField(max_length=400, verbose_name='Комментарий', null=False, blank=True)
     # on_delete=models.CASCADE = если категория поста будет удалена, то удалятся и посты
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Категории')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True,
+                                 verbose_name='Категории')
     NEW = 'new'
     LOAD = 'load'
     READY = 'ready'
