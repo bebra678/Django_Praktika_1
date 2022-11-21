@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, UpdateView, ListView, TemplateView
+from django.views.generic import CreateView, DeleteView, UpdateView, ListView
 from .filters import CategoryFilters
 from .models import Design, Category
 from .forms import UserRegistrationForm, PostForm, CategoryForm
@@ -39,6 +39,42 @@ class CreateCategoryView(CreateView):
     form_class = CategoryForm
     template_name = 'catalog/create_category.html'
     success_url = reverse_lazy('post_control')
+
+
+# удаление заявок
+class DeletePost(DeleteView):
+    model = Design
+    success_url = reverse_lazy('post_control')
+
+    def form_valid(self):
+        self.object.delete()
+
+
+# удаление категорий
+class DeleteCategory(DeleteView):
+    model = Category
+    success_url = reverse_lazy('post_control')
+
+    def form_valid(self):
+        self.object.delete()
+
+
+# удаление заявок в личной кабинете
+class DeletePostByUser(DeleteView, LoginRequiredMixin):
+    model = Design
+    success_url = reverse_lazy('personal_area')
+
+    def form_valid(self):
+        self.object.delete()
+
+
+# обновление заявки
+class PostUpdate(UpdateView):
+    model = Design
+    fields = ('status', 'image', 'category', 'comment')
+    template_name = 'catalog/update_form.html'
+    success_url = reverse_lazy('post_control')
+
 
 
 # регистрация
@@ -83,39 +119,4 @@ def my_post(request):
 def post_control(request):
     f = CategoryFilters(request.GET, queryset=Design.objects.all())
     return render(request, 'catalog/post_control.html', {'filter': f})
-
-
-# удаление заявок
-class DeletePost(DeleteView):
-    model = Design
-    success_url = reverse_lazy('post_control')
-
-    def form_valid(self):
-        self.object.delete()
-
-
-# удаление категорий
-class DeleteCategory(DeleteView):
-    model = Category
-    success_url = reverse_lazy('post_control')
-
-    def form_valid(self):
-        self.object.delete()
-
-
-# удаление заявок в личной кабинете
-class DeletePostByUser(DeleteView, LoginRequiredMixin):
-    model = Design
-    success_url = reverse_lazy('personal_area')
-
-    def form_valid(self):
-        self.object.delete()
-
-
-# обновление заявки
-class PostUpdate(UpdateView):
-    model = Design
-    fields = ('status', 'image', 'category', 'comment')
-    template_name = 'catalog/update_form.html'
-    success_url = reverse_lazy('post_control')
 
