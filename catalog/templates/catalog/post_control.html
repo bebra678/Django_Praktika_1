@@ -54,6 +54,17 @@
             <p>
               <a href="{% url 'delete_post_by_user' design.id %}"><strong>Удалить заявку?</strong></a>
             </p>
+          <p>
+              <a href="{% url 'update_form' design.id %}"><strong>Изменить заявку?</strong></a>
+          </p>
+              {% elif  design.status == "load" %}
+                <p>
+                    <strong>Изменить заявку не возможно</strong>
+                </p>
+                {% elif  design.status == "ready" %}
+                  <p>
+                      <strong>Изменить заявку не возможно</strong>
+                  </p>
           {%endif%}
 
         </div>
