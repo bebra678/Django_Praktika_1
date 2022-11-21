@@ -1,19 +1,19 @@
 <!doctype html>
 <html lang="en" class="h-100">
-  <head>
-    <meta charset="utf-8">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'catalog/area.css' %}">
-    {%block title%} <title>Дизайн студия</title> {%endblock%}
-    <link href="../assets/dist/css/bootstrap.min.css">
-  </head>
-
-  <body class="d-flex h-100 text-center text-bg-dark">
-<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-  <header class="mb-auto">
-    <div>
+<head>
+<meta charset="utf-8">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% load static %}
+<link rel="stylesheet" href="{% static 'catalog/area.css' %}">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+{%block title%} <title>Дизайн студия</title> {%endblock%}
+<link href="../assets/dist/css/bootstrap.min.css">
+<script src='//'></script>
+</head>
+<body class="d-flex h-100 text-center text-bg-dark">
+  <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <header>
       <nav class="nav nav-masthead justify-content-center">
         <a class="nav-link fw-bold py-1 px-0" aria-current="page" href="{% url 'index' %}">Домашняя страница</a>
         {% if user.is_authenticated %}
@@ -29,37 +29,49 @@
           <a class="nav-link fw-bold py-1 px-0" href="{% url 'register' %}?next={{request.path}}">Регистрация</a>
           {%endif%}
       </nav>
-    </div>
   </header>
-    <div class="main">
-      {% for design in design_list %}
-      <div class="design">
-        <p>Название: {{ design.name }}</p>
-        <img src="{{ design.image.url}}" alt="connect" style="max-height:150px">
-         <p class="text">Описание: {{ design.info }}</p>
-        <p>Cтатус: {{ design.get_status_display }}</p>
-        <p>Категория: {{ design.category}}</p>
-        <p>Комментарий: {{ design.comment }}</p>
-        <p>Дата: {{ design.date }} </p>
-        <p>User: {{ design.user }} </p>
-         <form method="get">
+
+    <div class="text-center" style="margin-top:40px; margin-bottom:40px">
+      <form method="get" id="filter">
         {{ filter.form.as_p }}
-        <input type="submit" />
-    </form>
-    {% for obj in filter.qs %}
-        {{ design.category }}<br />
-    {% endfor %}
-    </form>
-        {% if design.status == "new" %}
-          <p><a href="{% url 'delete_post_by_user' design.id %}"><strong>Удалить заявку?</strong></a></p>
-        {%endif%}
-      </div>
-      {% endfor %}
+        <input type="submit" class="filter-button">
+      </form>
     </div>
-  <footer class="mt-auto text-white-50">
-    <p>Floppa</a>.</p>
-  </footer>
-  </main>
-</div>
+
+    <div class="main">
+    {% for design in filter.qs %}
+      <div class="design">
+          <p>Название: {{ design.name }}</p>
+          <img src="{{ design.image.url}}" alt="connect" style="max-height:150px">
+           <p class="text">Описание: {{ design.info }}</p>
+          <p>Cтатус: {{ design.get_status_display }}</p>
+          <p>Категория: {{ design.category}}</p>
+          <p>Комментарий: {{ design.comment }}</p>
+          <p>Дата: {{ design.date }} </p>
+          <p>User: {{ design.user }} </p>
+
+          {% if design.status == "new" %}
+            <p>
+              <a href="{% url 'delete_post_by_user' design.id %}"><strong>Удалить заявку?</strong></a>
+            </p>
+          {%endif%}
+
+        </div>
+    {% endfor %}
+
+    </div>
+
+    <footer class="mt-auto text-white-50">
+      <p>Floppa</a>.</p>
+    </footer>
+  </div>
 </body>
+
+<script>
+  $("#filter .filter-button").hide();
+  $(document).on("change", "#filter", function(e) {
+    $(this).submit();
+  });
+</script>
+
 </html>
