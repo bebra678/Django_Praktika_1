@@ -23,7 +23,7 @@ urlpatterns = [
     path('catalog/', include('catalog.urls')),  # Вы всегда должны использовать include
     path('', RedirectView.as_view(url='catalog/', permanent=True)),
     # include() при включении других шаблонов URL.
-    path('admin/', admin.site.urls),
+    path('super-admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
 ]
 
