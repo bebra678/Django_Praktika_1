@@ -1,14 +1,9 @@
-from urllib import request
-
-import django_filters
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView, TemplateView
 from django_filters.views import FilterView
-
-# from .filters import CategoryFilter
 from .filters import CategoryFilters
 from .models import Design, Category
 from .forms import UserRegistrationForm, PostForm, CategoryForm
@@ -16,10 +11,6 @@ from .forms import UserRegistrationForm, PostForm, CategoryForm
 
 class IndexView(TemplateView):
     template_name = "index.html"
-
-
-
-
 
 
 class CreatePostView(LoginRequiredMixin, CreateView):
@@ -70,7 +61,7 @@ def logout_view(request):
     redirect('index.html')
 
 
-class PostsListView(ListView, FilterView,):
+class PostsListView(ListView,):
     model = Design
     template_name = "catalog/design_list.html"
     paginate_by = 4
@@ -80,15 +71,14 @@ class PostsListView(ListView, FilterView,):
         return Design.objects.filter(status='new')
 
 
-class MyDesign(ListView, LoginRequiredMixin, FilterView):
-    model = Design
-    template_name = "catalog/personal_area.html"
-    context_object_name = 'design_list'
-    filter_class = CategoryFilters
+def my_post(request):
+    f = CategoryFilters(request.GET, queryset=Design.objects.filter(user=request.user))
+    return render(request, 'catalog/personal_area.html', {'filter': f})
 
-    def get_queryset(self):
-        queryset = CategoryFilters(self.request.GET, queryset=Design.objects.filter(user=self.request.user))
-        return queryset
+
+def post_control(request):
+    f = CategoryFilters(request.GET, queryset=Design.objects.all())
+    return render(request, 'catalog/post_control.html', {'filter': f})
 
 
 class DeletePost(DeleteView):
@@ -113,11 +103,6 @@ class DeletePostByUser(DeleteView, LoginRequiredMixin):
 
     def form_valid(self):
         self.object.delete()
-
-
-class PostControl(ListView):
-    model = Design
-    template_name = 'catalog/post_control.html'
 
 
 class PostUpdate(UpdateView):
