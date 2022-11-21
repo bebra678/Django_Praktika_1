@@ -1,23 +1,31 @@
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView, TemplateView
-from django_filters.views import FilterView
 from .filters import CategoryFilters
 from .models import Design, Category
 from .forms import UserRegistrationForm, PostForm, CategoryForm
 
 
-class IndexView(TemplateView):
-    template_name = "index.html"
+# index
+class IndexView(ListView):
+    model = Design
+    paginate_by = 4
+    filter_class = CategoryFilters
+
+    def get_queryset(self):
+        return Design.objects.filter(status='new')
 
 
+# создание постов
 class CreatePostView(LoginRequiredMixin, CreateView):
     model = Design
     form_class = PostForm
     template_name = 'catalog/create_post.html'
-    success_url = reverse_lazy('posts')
+    success_url = reverse_lazy('index')
 
     def form_valid(self, form):
         # super - функция, которая обращается к классу, от которого наследуется текущий.
@@ -25,6 +33,7 @@ class CreatePostView(LoginRequiredMixin, CreateView):
         return super(CreatePostView, self).form_valid(form)
 
 
+# создание категории
 class CreateCategoryView(CreateView):
     model = Category
     form_class = CategoryForm
@@ -32,7 +41,7 @@ class CreateCategoryView(CreateView):
     success_url = reverse_lazy('post_control')
 
 
-#FIXME: сменить def на class
+# регистрация
 def register(request):
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
@@ -46,7 +55,7 @@ def register(request):
     return render(request, 'register.html', {'user_form': user_form})
 
 
-#FIXME: lower word in def
+# логин
 def login_view(request):
     username = request.POST['username']
     password = request.POST['password']
@@ -56,31 +65,27 @@ def login_view(request):
         redirect('index.html')
 
 
+# выход
 def logout_view(request):
     logout(request)
     redirect('index.html')
 
 
-class PostsListView(ListView,):
-    model = Design
-    template_name = "catalog/design_list.html"
-    paginate_by = 4
-    filter_class = CategoryFilters
-
-    def get_queryset(self):
-        return Design.objects.filter(status='new')
-
-
+# личный кабинет
+@login_required
 def my_post(request):
     f = CategoryFilters(request.GET, queryset=Design.objects.filter(user=request.user))
     return render(request, 'catalog/personal_area.html', {'filter': f})
 
 
+# управления заявками
+@staff_member_required(login_url='/accounts/login/')
 def post_control(request):
     f = CategoryFilters(request.GET, queryset=Design.objects.all())
     return render(request, 'catalog/post_control.html', {'filter': f})
 
 
+# удаление заявок
 class DeletePost(DeleteView):
     model = Design
     success_url = reverse_lazy('post_control')
@@ -89,6 +94,7 @@ class DeletePost(DeleteView):
         self.object.delete()
 
 
+# удаление категорий
 class DeleteCategory(DeleteView):
     model = Category
     success_url = reverse_lazy('post_control')
@@ -97,6 +103,7 @@ class DeleteCategory(DeleteView):
         self.object.delete()
 
 
+# удаление заявок в личной кабинете
 class DeletePostByUser(DeleteView, LoginRequiredMixin):
     model = Design
     success_url = reverse_lazy('personal_area')
@@ -105,6 +112,7 @@ class DeletePostByUser(DeleteView, LoginRequiredMixin):
         self.object.delete()
 
 
+# обновление заявки
 class PostUpdate(UpdateView):
     model = Design
     fields = ('status', 'image', 'category', 'comment')
