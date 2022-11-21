@@ -1,4 +1,3 @@
-import django_filters
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -66,9 +65,3 @@ class CategoryForm(forms.ModelForm):
         model = Category
         fields = ['name']
 
-
-class CategoryFilters(django_filters.FilterSet):
-    class Meta:
-        model = Design
-        fields = ['category']
-        exclude = ['image']
