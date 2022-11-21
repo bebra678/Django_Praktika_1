@@ -18,11 +18,11 @@
         <a class="nav-link fw-bold py-1 px-0" aria-current="page" href="{% url 'index' %}">Домашняя страница</a>
         {% if user.is_authenticated %}
           {%if user.is_staff %}
-            <a class="nav-link fw-bold py-1 px-0" href="{% url 'post_control' %}">Контроль заявок</a>
+            <a class="nav-link fw-bold py-1 px-0 active" href="{% url 'post_control' %}">Контроль
+                заявок</a>
           {%endif%}
-          <a class="nav-link fw-bold py-1 px-0" href="{% url 'posts' %}">Заявки</a>
           <a class="nav-link fw-bold py-1 px-0" href="{% url 'add_post' %}">Создать заявку</a>
-          <a class="nav-link fw-bold py-1 px-0 active" href="{% url 'personal_area' %}">Пользователь: {{ user.get_username }}</a>
+          <a class="nav-link fw-bold py-1 px-0" href="{% url 'personal_area' %}">Пользователь: {{ user.get_username }}</a>
           <a class="nav-link fw-bold py-1 px-0" href="{% url 'logout'%}?next={{request.path}}">Выход</a>
           {%else%}
           <a class="nav-link fw-bold py-1 px-0" href="{% url 'login'%}?next={{request.path}}">авторизация</a>
@@ -52,7 +52,7 @@
 
           {% if design.status == "new" %}
             <p>
-              <a href="{% url 'delete_post_by_user' design.id %}"><strong>Удалить заявку?</strong></a>
+              <a href="{% url 'delete_post' design.id %}"><strong>Удалить заявку?</strong></a>
             </p>
           <p>
               <a href="{% url 'update_form' design.id %}"><strong>Изменить заявку?</strong></a>

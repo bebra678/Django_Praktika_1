@@ -20,7 +20,6 @@
           {%if user.is_staff %}
             <a class="nav-link fw-bold py-1 px-0" href="{% url 'post_control' %}">Контроль заявок</a>
           {%endif%}
-          <a class="nav-link fw-bold py-1 px-0" href="{% url 'posts' %}">Заявки</a>
           <a class="nav-link fw-bold py-1 px-0" href="{% url 'add_post' %}">Создать заявку</a>
           <a class="nav-link fw-bold py-1 px-0 active" href="{% url 'personal_area' %}">Пользователь: {{ user.get_username }}</a>
           <a class="nav-link fw-bold py-1 px-0" href="{% url 'logout'%}?next={{request.path}}">Выход</a>
