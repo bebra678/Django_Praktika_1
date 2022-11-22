@@ -95,8 +95,6 @@ class PostFormUpdateReady(forms.ModelForm):
         fields = ['image', 'comment']
 
 
-
-
 class CategoryForm(forms.ModelForm):
 
     class Meta:
