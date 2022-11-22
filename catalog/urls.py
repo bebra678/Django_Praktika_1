@@ -1,3 +1,4 @@
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import permission_required
 from django.urls import path
 from .import views
@@ -16,7 +17,8 @@ urlpatterns = [
          , name='delete_category'),
     path('delete-by-user/<int:pk>/', views.DeletePostByUser.as_view(), name='delete_post_by_user'),
     path('post-control/', views.post_control, name='post_control'),
-    path('category-control/', views.CategoryControl.as_view(), name='category_control'),
+    path('category-control/',  staff_member_required(views.CategoryControl.as_view()),
+         name='category_control'),
     path('update-post-new/<int:pk>/', permission_required('change_post')(
         views.PostUpdateNew.as_view())
          , name='update_form_new'),
