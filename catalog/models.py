@@ -5,12 +5,11 @@ from django.utils.timezone import datetime
 
 class Category(models.Model):
     id = models.AutoField(primary_key=True, unique=True, verbose_name='id')
-    name = models.CharField(max_length=30, default='Эскиз',
-                            help_text='Категории',
-                                verbose_name='Категории')
+    name = models.CharField(max_length=30, unique=True, default='Эскиз',
+                            help_text='Категории', verbose_name='названием')
 
     class Meta:
-        verbose_name = 'Категорию'
+        verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
 
     def __str__(self):
