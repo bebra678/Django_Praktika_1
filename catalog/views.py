@@ -73,7 +73,7 @@ class DeletePostByUser(DeleteView, LoginRequiredMixin):
 class PostUpdateNew(UpdateView):
     model = Design
     form_class = PostFormUpdateNew
-    template_name = 'catalog/update_form.html'
+    template_name = 'catalog/update_form_new.html'
     success_url = reverse_lazy('post_control')
 
 
@@ -81,7 +81,7 @@ class PostUpdateNew(UpdateView):
 class PostUpdateReady(UpdateView):
     model = Design
     form_class = PostFormUpdateReady
-    template_name = 'catalog/update_form.html'
+    template_name = 'catalog/update_form_ready.html'
     success_url = reverse_lazy('post_control')
 
 
