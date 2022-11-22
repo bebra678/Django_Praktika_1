@@ -50,7 +50,7 @@ class UserRegistrationForm(forms.ModelForm):
 class PostForm(forms.ModelForm):
 
     def clean_image(self):
-        image = self.cleaned_data.get('image', False)
+        image = self.cleaned_data.get('image')
         if image:
             if image.size > 2 * 1024 * 1024:
                 raise ValidationError("Вес картинки больше 2мб")
@@ -66,7 +66,7 @@ class PostForm(forms.ModelForm):
 class PostFormUpdateNew(forms.ModelForm):
 
     def clean_image(self):
-        image = self.cleaned_data.get('image', False)
+        image = self.cleaned_data.get('image')
         if image:
             if image.size > 2 * 1024 * 1024:
                 raise ValidationError("Вес картинки больше 2мб")
@@ -82,7 +82,7 @@ class PostFormUpdateNew(forms.ModelForm):
 class PostFormUpdateReady(forms.ModelForm):
 
     def clean_image(self):
-        image = self.cleaned_data.get('image', False)
+        image = self.cleaned_data.get('image')
         if image:
             if image.size > 2 * 1024 * 1024:
                 raise ValidationError("Вес картинки больше 2мб")
