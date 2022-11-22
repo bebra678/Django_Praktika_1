@@ -21,6 +21,11 @@ class IndexView(ListView):
         return Design.objects.filter(status='new')
 
 
+class CategoryControl(ListView):
+    model = Category
+    template_name = 'catalog/category_control.html'
+
+
 # создание постов
 class CreatePostView(LoginRequiredMixin, CreateView):
     model = Design
@@ -39,7 +44,7 @@ class CreateCategoryView(CreateView):
     model = Category
     form_class = CategoryForm
     template_name = 'catalog/create_category.html'
-    success_url = reverse_lazy('post_control')
+    success_url = reverse_lazy('category_control')
 
 
 # удаление заявок
@@ -52,12 +57,10 @@ class DeletePost(DeleteView):
 
 
 # удаление категорий
-class DeleteCategory(DeleteView):
+class DeleteCategoryView(DeleteView):
     model = Category
-    success_url = reverse_lazy('post_control')
-
-    def form_valid(self):
-        self.object.delete()
+    success_url = reverse_lazy('category_control')
+    template_name = 'catalog/delete_category.html'
 
 
 # удаление заявок в личной кабинете
