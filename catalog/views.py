@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView
 from .filters import CategoryFilters
 from .models import Design, Category
-from .forms import UserRegistrationForm, PostForm, CategoryForm, PostFormUpdateNew, \
+from .forms import UserRegistrationForm, PostForm, CategoryForm, PostFormUpdateNew,\
     PostFormUpdateReady
 
 
@@ -18,7 +18,7 @@ class IndexView(ListView):
     filter_class = CategoryFilters
 
     def get_queryset(self):
-        return Design.objects.filter(status='new')
+        return Design.objects.filter(status='ready')
 
 
 class CategoryControl(ListView):
