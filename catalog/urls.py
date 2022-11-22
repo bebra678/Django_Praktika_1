@@ -15,6 +15,10 @@ urlpatterns = [
     (views.DeleteCategory.as_view()), name='delete_category'),
     path('delete-by-user/<int:pk>/', views.DeletePostByUser.as_view(), name='delete_post_by_user'),
     path('post-control/', views.post_control, name='post_control'),
-    path('update-post/<int:pk>/', permission_required('change_post')(views.PostUpdate.as_view())
-         , name='update_form'),
+    path('update-post-new/<int:pk>/', permission_required('change_post')(
+        views.PostUpdateNew.as_view())
+         , name='update_form_new'),
+    path('update-post-ready/<int:pk>/', permission_required('change_post')(
+        views.PostUpdateReady.as_view())
+         , name='update_form_ready'),
 ]

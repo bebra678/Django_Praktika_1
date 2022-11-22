@@ -7,7 +7,8 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView
 from .filters import CategoryFilters
 from .models import Design, Category
-from .forms import UserRegistrationForm, PostForm, CategoryForm
+from .forms import UserRegistrationForm, PostForm, CategoryForm, PostFormUpdateNew, \
+    PostFormUpdateReady
 
 
 # index
@@ -69,12 +70,19 @@ class DeletePostByUser(DeleteView, LoginRequiredMixin):
 
 
 # обновление заявки
-class PostUpdate(UpdateView):
+class PostUpdateNew(UpdateView):
     model = Design
-    fields = ('status', 'image', 'category', 'comment')
+    form_class = PostFormUpdateNew
     template_name = 'catalog/update_form.html'
     success_url = reverse_lazy('post_control')
 
+
+# обновление заявки
+class PostUpdateReady(UpdateView):
+    model = Design
+    form_class = PostFormUpdateReady
+    template_name = 'catalog/update_form.html'
+    success_url = reverse_lazy('post_control')
 
 
 # регистрация
