@@ -25,11 +25,6 @@ body {
   background-color: RGBA(33,37,41,var(--bs-bg-opacity,1))!important;
 }
 
-.cover-container {
-  max-width: 42em;
-}
-
-
 /*
  * Header
  */
@@ -113,7 +108,8 @@ body {
 .main{
 
 display: flex;
-justify-content: space-around
+flex-wrap: wrap;
+justify-content: space-around;
 
 }
 
@@ -125,7 +121,7 @@ overflow: hidden;
 }
 
 .design{
-
+  margin: 4px;
   list-style-type: none;
   max-width: 203px
   ;overflow: hidden;

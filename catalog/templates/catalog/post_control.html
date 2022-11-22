@@ -12,7 +12,7 @@
 <script src='//'></script>
 </head>
 <body class="d-flex h-100 text-center text-bg-dark">
-  <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+  <div class="d-flex w-100 h-100 p-3 mx-auto flex-column">
     <header>
       <nav class="nav nav-masthead justify-content-center">
         <a class="nav-link fw-bold py-1 px-0" aria-current="page" href="{% url 'index' %}">Домашняя страница</a>
@@ -32,6 +32,7 @@
   </header>
 
     <div class="text-center" style="margin-top:40px; margin-bottom:40px">
+        <p><a href="#"></a>{{category}}</p>
       <form method="get" id="filter">
         {{ filter.form.as_p }}
         <input type="submit" class="filter-button">
