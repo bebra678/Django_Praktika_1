@@ -11,10 +11,12 @@ urlpatterns = [
     path('personal-area/', views.my_post, name='personal_area'),
     path('delete/<int:pk>/', permission_required('change_post')(views.DeletePost.as_view())
          , name='delete_post'),
-    path('delete-category/<int:pk>/', permission_required('change_post')
-    (views.DeleteCategory.as_view()), name='delete_category'),
+    path('delete-category/<int:pk>/', permission_required('change_post')(
+        views.DeleteCategoryView.as_view())
+         , name='delete_category'),
     path('delete-by-user/<int:pk>/', views.DeletePostByUser.as_view(), name='delete_post_by_user'),
     path('post-control/', views.post_control, name='post_control'),
+    path('category-control/', views.CategoryControl.as_view(), name='category_control'),
     path('update-post-new/<int:pk>/', permission_required('change_post')(
         views.PostUpdateNew.as_view())
          , name='update_form_new'),

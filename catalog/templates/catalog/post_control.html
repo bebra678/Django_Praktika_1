@@ -20,6 +20,8 @@
           {%if user.is_staff %}
             <a class="nav-link fw-bold py-1 px-0 active" href="{% url 'post_control' %}">Контроль
                 заявок</a>
+            <a class="nav-link fw-bold py-1 px-0" href="{% url 'category_control' %}">Управление
+                категориями</a>
           {%endif%}
           <a class="nav-link fw-bold py-1 px-0" href="{% url 'add_post' %}">Создать заявку</a>
           <a class="nav-link fw-bold py-1 px-0" href="{% url 'add_category' %}">Создать
@@ -34,8 +36,8 @@
   </header>
 
     <div class="text-center" style="margin-top:40px; margin-bottom:40px">
-        <p><a href="#"></a>{{category}}</p>
       <form method="get" id="filter">
+          <p><a class="nav-link fw-bold py-1 px-0" href="{% url 'category_control' %}">Управление категориями</a></p>
         {{ filter.form.as_p }}
         <input type="submit" class="filter-button">
       </form>
@@ -52,6 +54,7 @@
           <p>Комментарий: {{ design.comment }}</p>
           <p>Дата: {{ design.date }} </p>
           <p>User: {{ design.user }} </p>
+          <p>{{ category.id }}</p>
           <p><a href="{% url 'delete_post' design.id %}"><strong>Удалить заявку?</strong></a></p>
           {% if design.status == "new" %}
             <p><a href="{% url 'update_form_new' design.id %}"><strong>Изменить заявку?</strong></a></p>
