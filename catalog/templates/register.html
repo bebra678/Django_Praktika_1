@@ -21,7 +21,7 @@
 <table style="display: flex; justify-content: space-around;">
     <h1>Регистрация</h1>
     <p>Следуйте этой форме:</p>
-    <form action="." method="post">
+    <form method="post">
         {{ user_form.as_p }}
         {% csrf_token %}
     <input class="w-100 btn btn-lg btn-primary" type="submit" value="login">
