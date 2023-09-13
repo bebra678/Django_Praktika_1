@@ -1,20 +1,10 @@
-      /*
- * Globals
- */
-
-
-/* Custom default button */
 .btn-secondary,
 .btn-secondary:hover,
 .btn-secondary:focus {
   color: #333;
-  text-shadow: none; /* Prevent inheritance from `body` */
+  text-shadow: none;
 }
 
-
-/*
- * Base structure
- */
 
 body {
   text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
@@ -30,10 +20,6 @@ img {
 max-width:100%;
 height:auto;
 }
-
-/*
- * Header
- */
 
 .nav-masthead .nav-link {
   color: rgba(255, 255, 255, .5);
