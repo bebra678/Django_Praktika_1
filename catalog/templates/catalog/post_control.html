@@ -1,39 +1,6 @@
-<!doctype html>
-<html lang="en" class="h-100">
-<head>
-<meta charset="utf-8">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-{% load static %}
-<link rel="stylesheet" href="{% static 'catalog/area.css' %}">
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-{%block title%} <title>Дизайн студия</title> {%endblock%}
-<link href="../assets/dist/css/bootstrap.min.css">
-<script src='//'></script>
-</head>
-<body class="d-flex h-100 text-center text-bg-dark">
-  <div class="d-flex w-100 h-100 p-3 mx-auto flex-column">
-    <header>
-      <nav class="nav nav-masthead justify-content-center">
-        <a class="nav-link fw-bold py-1 px-0" aria-current="page" href="{% url 'index' %}">Домашняя страница</a>
-        {% if user.is_authenticated %}
-          {%if user.is_staff %}
-            <a class="nav-link fw-bold py-1 px-0 active" href="{% url 'post_control' %}">Контроль
-                заявок</a>
-            <a class="nav-link fw-bold py-1 px-0" href="{% url 'category_control' %}">Управление
-                категориями</a>
-          {%endif%}
-          <a class="nav-link fw-bold py-1 px-0" href="{% url 'add_post' %}">Создать заявку</a>
-          <a class="nav-link fw-bold py-1 px-0" href="{% url 'add_category' %}">Создать
-              категорию</a>
-          <a class="nav-link fw-bold py-1 px-0" href="{% url 'personal_area' %}">Пользователь: {{ user.get_username }}</a>
-          <a class="nav-link fw-bold py-1 px-0" href="{% url 'logout'%}?next={{request.path}}">Выход</a>
-          {%else%}
-          <a class="nav-link fw-bold py-1 px-0" href="{% url 'login'%}?next={{request.path}}">авторизация</a>
-          <a class="nav-link fw-bold py-1 px-0" href="{% url 'register' %}?next={{request.path}}">Регистрация</a>
-          {%endif%}
-      </nav>
-  </header>
+{% extends 'layout.html' %}
+{% block title %}Управление категориями{% endblock %}
+  {% block content %}
 
     <div class="text-center" style="margin-top:40px; margin-bottom:40px">
       <form method="get" id="filter">
@@ -43,9 +10,9 @@
       </form>
     </div>
 
-    <div class="main">
+    <div class="main1">
     {% for design in filter.qs %}
-      <div class="design">
+      <div class="features">
           <p>Название: {{ design.name }}</p>
           <img src="{{ design.image.url}}" alt="connect" style="max-height:150px">
            <p class="text">Описание: {{ design.info }}</p>
@@ -55,25 +22,24 @@
           <p>Дата: {{ design.date }} </p>
           <p>User: {{ design.user }} </p>
           <p>{{ category.id }}</p>
-          <p><a href="{% url 'delete_post' design.id %}"><strong>Удалить заявку?</strong></a></p>
+          <p><a href="{% url 'delete_post1' design.id %}"><strong>Удалить заявку?</strong></a></p>
           {% if design.status == "new" %}
             <p><a href="{% url 'update_form_new' design.id %}"><strong>Изменить заявку?</strong></a></p>
           {% else %}
-            <p><a
-                    href="{% url 'update_form_ready' design.id %}"><strong>Изменить
-                заявку?</strong></a></p>
+            <p><a href="{% url 'update_form_ready' design.id %}"><strong>Изменить заявку?</strong></a></p>
           {% endif %}
         </div>
     {% endfor %}
 
     </div>
 
-    <footer class="mt-auto text-white-50">
-      <p>Floppa</a>.</p>
-    </footer>
-  </div>
-</body>
 
+  </div>
+
+{% endblock %}
+
+
+{% block script %}
 <script>
   $("#filter .filter-button").hide();
   $(document).on("change", "#filter", function(e) {
@@ -82,3 +48,4 @@
 </script>
 
 </html>
+{% endblock %}

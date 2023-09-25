@@ -6,27 +6,12 @@ from .models import Design, Category
 
 
 class UserRegistrationForm(forms.ModelForm):
-    username = forms.CharField(label='Логин', widget=forms.TextInput,
-                               validators=[RegexValidator(r'[a-zA-Z\-]',
-                                                                                                 'доступны'
-                                                                                                 ' только латинские'
-                                                                                                 ' символы')],
-                               required=True)
-
-    full_name = forms.CharField(label='ФИО', widget=forms.TextInput,
-                                validators=
-                                [RegexValidator(r'[а-яА-ЯёЁ\-\s]',
-
-                                            'В ФИО доступна только кириллица, пробелы и дефис')],
-                                required=True)
-
-    password = forms.CharField(label='Пароль', widget=forms.PasswordInput, required=True)
+    username = forms.CharField(label='Логин', widget=forms.TextInput, validators=[RegexValidator(r'[a-zA-Z\-]', 'доступны только латинские символы')], required=True)
+    full_name = forms.CharField(label='ФИО', widget=forms.TextInput, validators=[RegexValidator(r'[а-яА-ЯёЁ\-\s]', 'В ФИО доступна только кириллица, пробелы и дефис')], required=True)
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput, min_length=3, required=True)
     password2 = forms.CharField(label='Повторите пароль', widget=forms.PasswordInput, required=True)
-    email = forms.EmailField(label='Email', widget=forms.EmailInput, required=True,
-                             validators=[EmailValidator('Email не верен')])
-    checkbox = forms.CharField(label='Согласие на обработку персональных данных',
-                               widget=forms.CheckboxInput,
-                               required=True)
+    email = forms.EmailField(label='Email', widget=forms.EmailInput, required=True, validators=[EmailValidator('Email не верен')])
+    checkbox = forms.CharField(label='Согласие на обработку персональных данных', widget=forms.CheckboxInput, required=True)
 
     class Meta:
         model = User
@@ -41,7 +26,6 @@ class UserRegistrationForm(forms.ModelForm):
     def clean_checkbox(self):
         cd = self.cleaned_data
         print(cd['checkbox'])
-        # без использования False
         if not cd['checkbox']:
             raise forms.ValidationError('Подтвердите обработку персональных данных')
         return cd['checkbox']

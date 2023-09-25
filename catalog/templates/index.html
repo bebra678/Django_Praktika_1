@@ -1,46 +1,9 @@
-<!doctype html>
-<html lang="en" class="h-100">
-  <head>
-    <meta charset="utf-8">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'catalog/design_list.css' %}">
-    {%block title%} <title>Дизайн студия</title> {%endblock%}
-
-<link href="../assets/dist/css/bootstrap.min.css">
-
-  </head>
-  <body class="d-flex h-100 text-center text-bg-dark">
-
-<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-  <header class="mb-auto">
-    <div>
-      <nav class="nav nav-masthead justify-content-center">
-        <a class="nav-link fw-bold py-1 px-0 active" aria-current="page"
-           href="{% url 'index' %}">Домашняя страница</a>
-        {% if user.is_authenticated %}
-          {%if user.is_staff %}
-            <a class="nav-link fw-bold py-1 px-0" href="{% url 'post_control' %}">Контроль заявок</a>
-            <a class="nav-link fw-bold py-1 px-0" href="{% url 'category_control' %}">Управление категориями</a>
-          {%endif%}
-          <a class="nav-link fw-bold py-1 px-0" href="{% url 'add_post' %}">Создать заявку</a>
-          <a class="nav-link fw-bold py-1 px-0" href="{% url 'personal_area' %}">Пользователь: {{ user.get_username }}</a>
-          <a class="nav-link fw-bold py-1 px-0" href="{% url 'logout'%}?next={{request.path}}">Выход</a>
-          {%else%}
-          <a class="nav-link fw-bold py-1 px-0" href="{% url 'login'%}?next={{request.path}}">авторизация</a>
-          <a class="nav-link fw-bold py-1 px-0" href="{% url 'register' %}?next={{request.path}}">Регистрация</a>
-          {%endif%}
-      </nav>
-    </div>
-  </header>
+{% extends 'layout.html' %}
+{% block title %}Главная{% endblock %}
   {% block content %}
     {% if design_list %}
-    <div class="main">
       {% for design in design_list %}
-      <div class="design">
+      <div class="features">
         <p>Название: {{ design.name }}</p>
         <img src="{{ design.image.url}}" alt="connect" style="max-height:150px">
         <p>Описание: {{ design.info }}</p>
@@ -52,15 +15,12 @@
         {% endif %}
       </div>
       {% endfor %}
-    </div>
     {% else %}
       <p>Заявок нет</p>
     {% endif %}
-  <footer class="mt-auto text-white-50">
-    <p><strong>Работ принятых в работу: </strong> {{ design_list|length }}</p>
-    <p>Floppa</a>.</p>
-  </footer>
+<!--  <footer class="mt-auto text-white-50">-->
+<!--    <p><strong>Всего заявок: </strong> {{ design_list|length }}</p>-->
+<!--  </footer>-->
   {% endblock %}
-</div>
-</body>
-</html>
+
+

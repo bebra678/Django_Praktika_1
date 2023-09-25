@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'catalog/main.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+</head>
+<body>
+    <aside>
+        <span class="logo">DesignStudio</span>
+        <h3>Навигация</h3>
+        <ul>
+            <a href="{% url 'index' %}"><li><i class="fas fa-home"></i> Главная</li></a>
+            {% if user.is_authenticated %}
+            {%if user.is_staff %}
+            <a href="{% url 'post_control' %}"><li><i class="fa fa-magic"></i> Контроль заявок</li></a>
+            <a href="{% url 'category_control' %}"><li><i class="fa fa-magic"></i> Управление категориями</li></a>
+            <a href="{% url 'add_category' %}"><li><i class="fa fa-magic"></i> Создание категории</li></a>
+            {%endif%}
+            <a href="{% url 'add_post' %}"><li><i class="fa fa-magic"></i> Создать заявку</li></a>
+            <a href="{% url 'personal_area' %}"><li><i class="fa fa-user"></i> Пользователь: {{ user.get_username }}</li></a>
+            <a href="{% url 'logout'%}?next={{request.path}}"><li><i class="fa fa-reply"></i> Выход</li></a>
+            {%else%}
+            <a href="{% url 'login'%}?next={{request.path}}"><li><i class="fa fa-user"></i> Авторизация</li></a>
+            <a href="{% url 'register' %}?next={{request.path}}"><li><i class="fa fa-user-plus"></i> Регистрация</li></a>
+            {%endif%}
+        </ul>
+    </aside>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+{% block script %}{% endblock %}
+</html>

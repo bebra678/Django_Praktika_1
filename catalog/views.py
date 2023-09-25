@@ -2,6 +2,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView
@@ -11,10 +12,9 @@ from .forms import UserRegistrationForm, PostForm, CategoryForm, PostFormUpdateN
     PostFormUpdateReady
 
 
-# index
 class IndexView(ListView):
     model = Design
-    paginate_by = 4
+    paginate_by = 3
     filter_class = CategoryFilters
 
     def get_queryset(self):
@@ -26,7 +26,6 @@ class CategoryControl(ListView):
     template_name = 'catalog/category_control.html'
 
 
-# создание постов
 class CreatePostView(LoginRequiredMixin, CreateView):
     model = Design
     form_class = PostForm
@@ -39,7 +38,6 @@ class CreatePostView(LoginRequiredMixin, CreateView):
         return super(CreatePostView, self).form_valid(form)
 
 
-# создание категории
 class CreateCategoryView(CreateView):
     model = Category
     form_class = CategoryForm
@@ -47,32 +45,33 @@ class CreateCategoryView(CreateView):
     success_url = reverse_lazy('category_control')
 
 
-# удаление заявок
-class DeletePost(DeleteView):
+class DeletePost1(DeleteView):
     model = Design
+    template_name = 'catalog/delete_post.html'
     success_url = reverse_lazy('post_control')
 
-    def form_valid(self):
-        self.object.delete()
 
-
-# удаление категорий
 class DeleteCategoryView(DeleteView):
     model = Category
     success_url = reverse_lazy('category_control')
     template_name = 'catalog/delete_category.html'
 
 
-# удаление заявок в личной кабинете
-class DeletePostByUser(DeleteView, LoginRequiredMixin):
-    model = Design
-    success_url = reverse_lazy('personal_area')
+# class DeletePostByUser1(DeleteView, LoginRequiredMixin):
+#     model = Design
+#     # template_name = 'catalog/delete_post.html'
+#     success_url = reverse_lazy('personal_area')
+#
+#     def delete(self, request, *args, **kwargs):
+#         self.design = self.get_object()
+#         success_url = reverse_lazy('personal_area')
+#         if self.design.status == 'new':
+#             self.design.delete()
+#             return redirect(success_url)
+#         else:
+#             return redirect(success_url)
 
-    def form_valid(self):
-        self.object.delete()
 
-
-# обновление заявки
 class PostUpdateNew(UpdateView):
     model = Design
     form_class = PostFormUpdateNew
@@ -80,7 +79,6 @@ class PostUpdateNew(UpdateView):
     success_url = reverse_lazy('post_control')
 
 
-# обновление заявки
 class PostUpdateReady(UpdateView):
     model = Design
     form_class = PostFormUpdateReady
@@ -88,7 +86,6 @@ class PostUpdateReady(UpdateView):
     success_url = reverse_lazy('post_control')
 
 
-# регистрация
 def register(request):
     if request.user.id:
         return redirect('index')
@@ -111,7 +108,6 @@ def register(request):
 #     template_name = 'register.html'
 
 
-# логин
 def login_view(request):
     username = request.POST['username']
     password = request.POST['password']
@@ -121,22 +117,29 @@ def login_view(request):
         redirect('index.html')
 
 
-# выход
 def logout_view(request):
     logout(request)
     redirect('index.html')
 
 
-# личный кабинет
 @login_required
 def my_post(request):
     f = CategoryFilters(request.GET, queryset=Design.objects.filter(user=request.user))
     return render(request, 'catalog/personal_area.html', {'filter': f})
 
 
-# управления заявками
 @staff_member_required(login_url='/accounts/login/')
 def post_control(request):
     f = CategoryFilters(request.GET, queryset=Design.objects.all())
     return render(request, 'catalog/post_control.html', {'filter': f})
 
+
+def delete_post(request, pk):
+    if request.user.is_authenticated:
+        del_post = Design.objects.get(id=pk)
+        success_url = reverse_lazy('personal_area')
+        if del_post.status == "new":
+            del_post.delete()
+            return redirect('personal_area')
+        else:
+            return redirect('personal_area')
